@@ -14,26 +14,37 @@ credentials.each { |key, value|
 }
 
 driver.find_element(:class, "EAbutton").click # Skicka credentials
-driver.find_element(:id, "ctl00_ContentMain_ButtonBook").click #
-driver.find_element(:id, "ctl00_ContentMain_ButtonNext").click # Typ B körkort
-driver.find_element(:id, "ctl00_ContentMain_ButtonNext").click # Körprov B
 
-select = driver.find_element(:id, "ctl00_ContentMain_ddlCounties")
-all_options = select.find_elements(:tag_name, "option")
-all_options.each do |option|
-  value = option.attribute("value")
-  if value == "1" # Select 1, which is Stockholm
-    option.click
-    break
+omboka_element = driver.find_elements(:id, "ctl00_ContentMain_ButtonRescheduleBooking").first
+
+if omboka_element
+  id = "ctl00_ContentMain_RepeaterCurrentBookings_ctl01_RadioButtonBooking"
+  driver.find_element(:id, id).click # Assume there is only one option and you want to rebook it
+  omboka_element.click
+else
+  # The user probably doesn't have booked yet, so lets click buttons for booking
+  driver.find_element(:id, "ctl00_ContentMain_ButtonBook").click #
+  driver.find_element(:id, "ctl00_ContentMain_ButtonNext").click # Typ B körkort
+  driver.find_element(:id, "ctl00_ContentMain_ButtonNext").click # Körprov B
+
+  select = driver.find_element(:id, "ctl00_ContentMain_ddlCounties")
+  all_options = select.find_elements(:tag_name, "option")
+  all_options.each do |option|
+    value = option.attribute("value")
+    if value == "1" # Select 1, which is Stockholm
+      option.click
+      break
+    end
   end
+  driver.find_element(:id, "ctl00_ContentMain_RadioButtonCounty").click # Länets tio snabbaste
+  driver.find_element(:id, "ctl00_ContentMain_btnShow").click # Click "Visa"
+
 end
-driver.find_element(:id, "ctl00_ContentMain_RadioButtonCounty").click # Länets tio snabbaste
-driver.find_element(:id, "ctl00_ContentMain_btnShow").click # Click "Visa"
 
 i = 0
 while true
   puts "Attempt #{i+=1}:"
-  labelss = driver.find_elements(:tag_name, "label").each_slice(6)
+  labelss = driver.find_elements(:tag_name, "label")[(omboka_element ? 5 : 0)..-1].each_slice(6)
   raw_lines = labelss.map do |labels|
     labels.map(&:text).join(" ")
   end

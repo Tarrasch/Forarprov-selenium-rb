@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+require "rubygems" # For those using old style installations of ruby
 require "selenium-webdriver"
 require "yaml"
 require "./korning-lib.rb"

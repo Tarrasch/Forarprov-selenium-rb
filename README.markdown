@@ -37,6 +37,15 @@ For those not having the `notify-send` command, you must edit the method
 `notify_user` to send some user notification that a interesting booking
 have been found.
 
+#### Ubuntu (and partially linux) users
+
+To get `ogg123` which will enable sounds, issue
+
+    sudo apt-get install vorbis-tools
+
+To notify a user on the screen (in case sound i muted or not working), I use
+the `notify-send` command which I believe only exists on Ubuntu systems.
+
 ### Usage
 
     ruby korning-selenium.rb

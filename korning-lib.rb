@@ -14,5 +14,6 @@ class Goer # I must class it to test it
   def self.notify_user(title, body)
     puts "#{title}:\n#{body}\n"
     `notify-send '#{title}' '#{body}'` # Ubuntu notification
+    `ogg123 /usr/share/sounds/gnome/default/alerts/*.ogg`
   end
 end

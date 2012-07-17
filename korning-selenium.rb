@@ -50,8 +50,10 @@ while true
     labels.map(&:text).join(" ")
   end
   puts raw_lines.join("\n")
-  Goer::go(raw_lines)
-  sleep(30)
+  res = Goer::go(raw_lines)
+  driver.find_element(:id, "ctl00_ContentMain_OccasionList1_RepeaterOccasions_ctl01_RadioButtonOccasion").click if res
+  sleep(omboka_element ? 10 : 30)
   driver.find_element(:id, "ctl00_ContentMain_OccasionList1_btnUpdateOccasions").click
+  sleep(90) if res
 end
 
